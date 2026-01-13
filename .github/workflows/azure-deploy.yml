@@ -68,6 +68,16 @@ jobs:
           cd ..
           ls -la backend/node_modules | head -10
 
+      - name: Package node_modules for Azure extraction
+        run: |
+          cd backend
+          # remove any existing tarball to avoid stale content
+          rm -f node_modules.tar.gz || true
+          tar -czf node_modules.tar.gz node_modules
+          echo "Created node_modules.tar.gz:" && ls -lh node_modules.tar.gz
+          # show a short sample of files to verify presence
+          tar -tf node_modules.tar.gz | head -20
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
