@@ -38,9 +38,10 @@ jobs:
         with:
           name: backend-build
           path: |
+            package.json
+            package-lock.json
             backend/dist/
             backend/package.json
-            package-lock.json
 
   deploy:
     runs-on: ubuntu-latest
