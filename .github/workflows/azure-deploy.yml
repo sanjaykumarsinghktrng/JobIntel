@@ -64,18 +64,16 @@ jobs:
       - name: Install production dependencies
         run: |
           set -euxo pipefail
-          cd backend
-          echo "Install production dependencies in $(pwd)"
-          npm ci --omit=dev --legacy-peer-deps || {
-            echo "npm ci failed in backend/ — listing backend/ for debugging";
-            ls -la . || true;
-            ls -la package.json || true;
+          echo "Install production dependencies into backend/node_modules using --prefix"
+          npm ci --prefix backend --omit=dev --legacy-peer-deps || {
+            echo "npm ci failed for backend (prefix) — debugging";
+            ls -la backend || true;
+            ls -la backend/package.json || true;
             npm --version || true;
             node --version || true;
             exit 1;
           }
-          echo "Installed node modules:" && ls -la node_modules | head -20
-          cd ..
+          echo "Installed node modules in backend:" && ls -la backend/node_modules | head -20
 
       - name: Package node_modules for Azure extraction
         run: |
